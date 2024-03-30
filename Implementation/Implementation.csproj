@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Application\**" />
+    <Compile Remove="Persistence\**" />
+    <EmbeddedResource Remove="Application\**" />
+    <EmbeddedResource Remove="Persistence\**" />
+    <None Remove="Application\**" />
+    <None Remove="Persistence\**" />
+  </ItemGroup>
+
+</Project>
