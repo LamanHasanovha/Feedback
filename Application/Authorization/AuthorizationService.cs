@@ -25,13 +25,22 @@ public class AuthorizationService : IAuthorizationService
         _tokenHelper = tokenHelper;
     }
 
-    public async Task<User?> AddOrUpdateUser(User user)
+    public async Task<User?> AddOrUpdateUser(AddOrUpdateUserInput user)
     {
         User result = null;
 
         if(user.Id == 0)
         {
-            result = await _userRepository.InsertAsync(user);
+            result = await _userRepository.InsertAsync(new User
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                IsActive = user.IsActive,
+                Username = user.Username,
+                PasswordHash = [],
+                PasswordSalt = []
+            });
         }
         else
         {

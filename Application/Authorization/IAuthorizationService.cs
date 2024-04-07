@@ -11,5 +11,5 @@ public interface IAuthorizationService
 
     Task<User?> GetById(int id);
 
-    Task<User?> AddOrUpdateUser(User user);
+    Task<User?> AddOrUpdateUser(AddOrUpdateUserInput user);
 }

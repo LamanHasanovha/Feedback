@@ -1,11 +1,11 @@
 ﻿using Application.Students;
-using Interfaces.Students.Application;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class StudentsController : ControllerBase
 {
     private readonly IStudentService _studentService;
