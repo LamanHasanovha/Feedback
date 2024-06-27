@@ -2,7 +2,6 @@
 using Main.Domain.Authorization;
 using Main.Persistence.Authorization;
 using Main.Security.Jwt;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace Application.Authorization;
