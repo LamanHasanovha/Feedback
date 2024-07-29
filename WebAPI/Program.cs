@@ -1,13 +1,40 @@
 using DependencyResolution;
 using Main.Base.Instance;
+using Main.Localization;
 using Main.Persistence.PersistenceBase.AdoNet;
 using Main.Security.Jwt;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Localization;
 using Microsoft.OpenApi.Models;
+using System.Globalization;
 using WebAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+#region Localization
+
+builder.Services.Configure<JsonLocalizationOptions>(options =>
+{
+    options.ResourcesPath = Path.Combine(Directory.GetCurrentDirectory(), "Resources");
+});
+builder.Services.AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
+builder.Services.AddSingleton<IStringLocalizer, JsonStringLocalizer>();
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[] { "en-US", "az-AZ", "tr-TR", "ru-RU" };
+    options.DefaultRequestCulture = new RequestCulture("en-US");
+    options.SupportedCultures = supportedCultures.Select(c => new CultureInfo(c)).ToList();
+    options.SupportedUICultures = supportedCultures.Select(c => new CultureInfo(c)).ToList();
+    options.RequestCultureProviders = new List<IRequestCultureProvider>
+    {
+        new AcceptLanguageHeaderRequestCultureProvider()
+    };
+});
+
+#endregion
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -57,6 +84,17 @@ builder.Services.AddSwaggerGen(swagger =>
 });
 
 var app = builder.Build();
+
+var supportedCultures = new[] { "en-US", "az-AZ", "tr-TR", "ru-RU" };
+
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("en-US"),
+    SupportedCultures = supportedCultures.Select(c => new CultureInfo(c)).ToList(),
+    SupportedUICultures = supportedCultures.Select(c => new CultureInfo(c)).ToList()
+};
+
+app.UseRequestLocalization(localizationOptions);
 
 var serviceFactory = app.Services.GetRequiredService<ServiceFactory>();
 QueryBuilderUtils.Initialize(serviceFactory);
